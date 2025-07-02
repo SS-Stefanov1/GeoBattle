@@ -1,40 +1,47 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-#include "Engine.hpp"
-#include "Actor.hpp"
+#include "EntityManager.hpp"
+#include "Entity.hpp"
+
+#include <iostream>
+
+struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
+struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
+struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
 
 class Game {
 	private : 
-		Engine           c_engine; 
-		sf::RenderWindow c_window; 
-		sf::Font         c_font;
-		sf::Text         c_text;
-		PlayerCfg        c_player_cfg;
-		EnemeyCfg        c_enemy_cfg;
-		ProjectileCfg    c_projectile_cfg;
-		int              c_score = 0;
-		int              c_frame = 0;
-		int              c_spawn = 0;
-		bool             c_running = true;
-		bool             c_paused  = false;
+		sf::RenderWindow m_window;
+		sf::Font         m_font;
+		sf::Text         m_text;
+		EntityManager    m_entities;
+		PlayerConfig     m_playerConfig;
+		EnemyConfig      m_enemyConfig;
+		BulletConfig     m_bulletConfig;
+		int              m_score   = 0;
+		int              m_currentFrame = 0;
+		int              m_lastEnemySpawnTime = 0;
+		bool             m_paused  = false;
+		bool             m_running = true;
 
-		std::shared_ptr<Actor> c_player;
+		std::shared_ptr<Entity> m_player;
 
-		void init(const std::string& cfg);
-		void pauseGame(bool state);
-	
+		void init(const std::string& config);
+		void setPaused(bool paused);
 		void sMovement();
-		void sInput();
-		void sDuration();
+		void sUserInput();
+		void sLifespan();
 		void sRender();
-		void sSpawnActor();
+		void sEnemySpawner();
 		void sCollision();
+
 		void spawnPlayer();
 		void spawnEnemy();
-		void spawnBullet();
-		void breakEnemy(std::shared_ptr<Actor> actor);
+		void spawnSmallEnemies(std::shared_ptr<Entity> entity);
+		void spawnBullet(std::shared_ptr<Entity> entity, const Vc2& mousePos);
+		void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
 
 	public :
-		Game(const std::string& cfg);
+		Game(const std::string& config);
 		void run();
 };
