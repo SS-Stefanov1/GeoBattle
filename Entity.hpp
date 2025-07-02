@@ -22,9 +22,9 @@ class Entity {
 		std::shared_ptr<CScore>     cScore;
 		std::shared_ptr<CLifespan>  cLifespan;
 
-		bool isActive() const {} ;
-		const std::string& tag() const {};
-		const std::size_t id() const {};
-		void destroy() {};
+		bool isActive() const;
+		const std::string& tag() const;
+		const std::size_t id() const;
+		void destroy();
 };
 

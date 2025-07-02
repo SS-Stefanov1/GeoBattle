@@ -7,6 +7,8 @@ void EntityManager::removeDeadEntities(EntityVec& v) {
 };
 
 void EntityManager::update() {
+	m_entitiesToAdd.clear();
+
 	for (auto& e : m_entitiesToAdd) {
 		m_entities.push_back(e);
 	}

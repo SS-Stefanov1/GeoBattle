@@ -45,6 +45,14 @@ void Game::spawnPlayer() {
 };
 
 void Game::spawnEnemy() {
+	auto entity = m_entities.addEntity("enemy");
+
+	float ex = rand() % m_window.getSize().x;
+	float ey = rand() % m_window.getSize().y;
+
+	entity->cTransform = std::make_shared<CTransform>(Vc2(ex,ey), Vc2(1.0f, 1.0f), 0.0f);
+	entity->cShape     = std::make_shared<CShape>(16.0f, 3, sf::Color(0,0,255), sf::Color(255,255,255), 4.0f);
+
 	m_lastEnemySpawnTime = m_currentFrame;
 };
 
@@ -61,8 +69,8 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
 };
 
 void Game::sMovement() {
-	m_player->cTransform->pos.x += m_player->cTransform->velocity.x;
-	m_player->cTransform->pos.y += m_player->cTransform->velocity.y;
+	m_player->cTransform->position.x += m_player->cTransform->velocity.x;
+	m_player->cTransform->position.y += m_player->cTransform->velocity.y;
 };
 
 void Game::sLifespan() {
@@ -74,20 +82,20 @@ void Game::sCollision() {
 };
 
 void Game::sEnemySpawner() {
-
+	spawnEnemy();
 };
 
 void Game::sRender() {
 	m_window.clear();
 
-	m_player->cShape->circle.setPosition(m_player->cTransform->pos.x, m_player->cTransform->pos.y);
+	m_player->cShape->circle.setPosition(m_player->cTransform->position.x, m_player->cTransform->position.y);
 	m_player->cTransform->angle += 1.0f;
 	m_player->cShape->circle.setRotation(m_player->cTransform->angle);
 
 	m_window.draw(m_player->cShape->circle);
 
-	for (auto e : m_entites.getEntities()) {
-		e->cShape->circle.setPosition(e->cTransform->pos.x, e->cTransform->pos.y);
+	for (auto e : m_entities.getEntities()) {
+		e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
 		e->cTransform->angle += 1.0f;
 		e->cShape->circle.setRotation(e->cTransform->angle);
 

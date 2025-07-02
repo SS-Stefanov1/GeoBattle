@@ -5,6 +5,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Vc2.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.hpp" />
@@ -12,5 +13,6 @@
     <ClInclude Include="EntityManager.hpp" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Vc2.hpp" />
+    <ClInclude Include="Game.hpp" />
   </ItemGroup>
 </Project>
