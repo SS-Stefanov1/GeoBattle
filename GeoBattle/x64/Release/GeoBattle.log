@@ -1,1 +1,18 @@
-﻿  GeoBattle.vcxproj -> C:\libraries\VSCPP\GeoBattle\x64\Release\GeoBattle.exe
+﻿  Game.cpp
+C:\libraries\VSCPP\GeoBattle\Game.cpp(108,11): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
+C:\libraries\VSCPP\GeoBattle\Game.cpp(108,11): warning C4244:         with
+C:\libraries\VSCPP\GeoBattle\Game.cpp(108,11): warning C4244:         [
+C:\libraries\VSCPP\GeoBattle\Game.cpp(108,11): warning C4244:             T=unsigned int
+C:\libraries\VSCPP\GeoBattle\Game.cpp(108,11): warning C4244:         ]
+C:\libraries\VSCPP\GeoBattle\Game.cpp(109,11): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
+C:\libraries\VSCPP\GeoBattle\Game.cpp(109,11): warning C4244:         with
+C:\libraries\VSCPP\GeoBattle\Game.cpp(109,11): warning C4244:         [
+C:\libraries\VSCPP\GeoBattle\Game.cpp(109,11): warning C4244:             T=unsigned int
+C:\libraries\VSCPP\GeoBattle\Game.cpp(109,11): warning C4244:         ]
+  main.cpp
+  Generating code
+  323 of 757 functions (42.7%) were compiled, the rest were copied from previous compilation.
+    21 functions were new in current compilation
+    27 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GeoBattle.vcxproj -> C:\libraries\VSCPP\GeoBattle\x64\Release\GeoBattle.exe

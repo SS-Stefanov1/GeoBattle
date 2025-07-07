@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 class Vc2 {
 	public :
 		float x = 0, y = 0;

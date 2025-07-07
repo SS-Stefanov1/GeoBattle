@@ -4,7 +4,65 @@ Game::Game(const std::string& config) {
 	init(config);
 };
 
+/*
+struct WindowConfig { int W, H, FR; bool FS; };
+struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
+struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
+struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
+*/
+
+void Game::loadFile(const std::string& path) {
+	std::ifstream file(path);
+	if (!file.is_open()) { return; }
+
+	std::unordered_map<std::string, std::function<void(std::istringstream&)>> p_map;
+
+	p_map["Window"] = [&](std::istringstream& iss) {
+		std::string data_in;
+
+		if (iss >> this->m_windowConfig.W >> this->m_windowConfig.H >> this->m_windowConfig.FR >> this->m_windowConfig.FS) {
+			std::getline(iss >> std::ws, data_in);
+		}
+	};
+
+	p_map["Font"]   = [](std::istringstream& iss) {
+
+	};
+
+	p_map["Player"] = [](std::istringstream& iss) {
+
+	};
+
+	p_map["Enemy"]  = [](std::istringstream& iss) {
+
+	};
+
+	p_map["Bullet"] = [](std::istringstream& iss) {
+
+	};
+
+	std::string c_line;
+	while (std::getline(file,c_line)) {
+		if (c_line.empty() || c_line[0] == '#') { continue; }
+
+		std::istringstream iss(c_line);
+		std::string c_tag;
+
+		iss >> c_tag;
+
+		auto c_it = p_map.find(c_tag);
+		
+		if (c_it != p_map.end()) {
+			c_it->second(iss);
+		} else {
+			std::cout << "Inccorectly formated config file." << std::endl;
+		}
+	};
+};
+
 void Game::init(const std::string& path) {
+	loadFile(path);
+
 	m_window.create(sf::VideoMode(1280,720), "GeoBattle");
 	m_window.setFramerateLimit(60);
 
@@ -37,7 +95,7 @@ void Game::spawnPlayer() {
 	float mx = m_window.getSize().x / 2.0f;
 	float my = m_window.getSize().y / 2.0f;
 
-	entity->cTransform = std::make_shared<CTransform>(Vc2(mx, my), Vc2(1.0f, 1.0f), 0.0f);
+	entity->cTransform = std::make_shared<CTransform>(Vc2(mx, my), Vc2(0.0f, 0.0f), 0.0f);
 	entity->cShape     = std::make_shared<CShape>(32.0f, 8, sf::Color(10,10,10), sf::Color(255,0,0), 4.0f);
 	entity->cInput     = std::make_shared<CInput>();
 
@@ -69,8 +127,21 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
 };
 
 void Game::sMovement() {
-	m_player->cTransform->position.x += m_player->cTransform->velocity.x;
-	m_player->cTransform->position.y += m_player->cTransform->velocity.y;
+	if (m_player->cInput->up) {
+		m_player->cTransform->velocity.x += m_playerConfig.S;
+	} else if (m_player->cInput->down) {
+		m_player->cTransform->velocity.x -= m_playerConfig.S;
+	}
+
+	if (m_player->cInput->left) {
+		m_player->cTransform->velocity.y -= m_playerConfig.S;
+	} else if (m_player->cInput->right) {
+		m_player->cTransform->velocity.y += m_playerConfig.S;
+	}
+	
+	if (m_player->cInput->shoot) {
+
+	}
 };
 
 void Game::sLifespan() {
@@ -113,12 +184,12 @@ void Game::sUserInput() {
 
 		if (event.type == sf::Event::KeyPressed) {
 			switch(event.key.code) {
-				case sf::Keyboard::W: break;
-				case sf::Keyboard::A: break;
-				case sf::Keyboard::S: break;
-				case sf::Keyboard::D: break;
+				case (sf::Keyboard::W): { m_player->cInput->up    = true; break; }
+				case (sf::Keyboard::A): { m_player->cInput->down  = true; break; }
+				case (sf::Keyboard::S): { m_player->cInput->left  = true; break; }
+				case (sf::Keyboard::D): { m_player->cInput->right = true; break; }
 
-				case sf::Keyboard::P: m_paused = !m_paused;
+				case (sf::Keyboard::P): { m_paused = !m_paused; }
 
 				default: break;
 			}
@@ -126,12 +197,12 @@ void Game::sUserInput() {
 
 		if (event.type == sf::Event::KeyReleased) {
 			switch(event.key.code) {
-			case sf::Keyboard::W: break;
-			case sf::Keyboard::A: break;
-			case sf::Keyboard::S: break;
-			case sf::Keyboard::D: break;
+			case (sf::Keyboard::W): { m_player->cInput->up    = false; break; }
+			case (sf::Keyboard::A): { m_player->cInput->down  = false; break; }
+			case (sf::Keyboard::S): { m_player->cInput->left  = false; break; }
+			case (sf::Keyboard::D): { m_player->cInput->right = false; break; }
 
-			case sf::Keyboard::P: m_paused = !m_paused;
+			case (sf::Keyboard::P): { m_paused = !m_paused; }
 
 			default: break;
 			}
@@ -139,11 +210,18 @@ void Game::sUserInput() {
 
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
+				m_player->cInput->shoot = true;
 				// event.mouseButton.x / event.mouseButton.y
 			}
 
 			if (event.mouseButton.button == sf::Mouse::Right) {
 				// event.mouseButton.x / event.mouseButton.y
+			}
+		}
+
+		if (event.type == sf::Event::MouseButtonReleased) {
+			if (event.mouseButton.button == sf::Mouse::Left) {
+				m_player->cInput->shoot = false;
 			}
 		}
 	}	

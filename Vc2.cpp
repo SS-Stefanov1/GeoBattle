@@ -12,9 +12,10 @@ Vc2  Vc2::operator /  (const float val) const { return Vc2(x / val, y / val); };
 Vc2  Vc2::operator *  (const float val) const { return Vc2(x * val, y * val); };
 
 void Vc2::operator += (const Vc2& rhs)  { x += rhs.x; y += rhs.y; };
-void Vc2::operator -= (const Vc2& rhs)  { x -= rhs.y; y -= rhs.y; };
+void Vc2::operator -= (const Vc2& rhs)  { x -= rhs.x; y -= rhs.y; };
 void Vc2::operator /= (const float val) { x /= val; y /= val; };
 void Vc2::operator *= (const float val) { x *= val; y *= val; };
 
-//fix this later
-float Vc2::dist(const Vc2& rhs) const { return rhs.x + rhs.y; };
+float Vc2::dist(const Vc2& rhs) const { return 
+	static_cast<float>(std::sqrt(std::pow(rhs.x - x, 2) + std::pow(rhs.y - y, 2))); 
+};
