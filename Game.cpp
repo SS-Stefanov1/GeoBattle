@@ -4,13 +4,6 @@ Game::Game(const std::string& config) {
 	init(config);
 };
 
-/*
-struct WindowConfig { int W, H, FR; bool FS; };
-struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
-struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
-struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
-*/
-
 void Game::loadFile(const std::string& path) {
 	std::ifstream file(path);
 	if (!file.is_open()) { return; }
@@ -20,25 +13,80 @@ void Game::loadFile(const std::string& path) {
 	p_map["Window"] = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_windowConfig.W >> this->m_windowConfig.H >> this->m_windowConfig.FR >> this->m_windowConfig.FS) {
+		if (iss >> this->m_windowConfig.W 
+				>> this->m_windowConfig.H 
+				>> this->m_windowConfig.FR 
+				>> this->m_windowConfig.FS) {
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
 
-	p_map["Font"]   = [](std::istringstream& iss) {
+	p_map["Font"]   = [&](std::istringstream& iss) {
+		std::string data_in;
 
+		if (iss >> this->m_fontConfig.P
+				>> this->m_fontConfig.S
+				>> this->m_fontConfig.FR
+				>> this->m_fontConfig.FG
+				>> this->m_fontConfig.FB) {
+			std::getline(iss >> std::ws, data_in);
+		}
 	};
 
-	p_map["Player"] = [](std::istringstream& iss) {
+	p_map["Player"] = [&](std::istringstream& iss) {
+		std::string data_in;
 
+		if (iss >> this->m_playerConfig.SR 
+				>> this->m_playerConfig.CR
+				>> this->m_playerConfig.FR
+				>> this->m_playerConfig.FG
+				>> this->m_playerConfig.FB
+				>> this->m_playerConfig.OR
+				>> this->m_playerConfig.OG
+				>> this->m_playerConfig.OB
+				>> this->m_playerConfig.OT
+				>> this->m_playerConfig.V
+				>> this->m_playerConfig.S) {
+			std::getline(iss >> std::ws, data_in);
+		}
 	};
 
-	p_map["Enemy"]  = [](std::istringstream& iss) {
+	p_map["Enemy"]  = [&](std::istringstream& iss) {
+		std::string data_in;
 
+		if (iss >> this->m_enemyConfig.SR
+				>> this->m_enemyConfig.CR
+				>> this->m_enemyConfig.OR
+				>> this->m_enemyConfig.OG
+				>> this->m_enemyConfig.OB
+				>> this->m_enemyConfig.OT
+				>> this->m_enemyConfig.VMIN
+				>> this->m_enemyConfig.VMAX
+				>> this->m_enemyConfig.L
+				>> this->m_enemyConfig.SI
+				>> this->m_enemyConfig.SMIN
+				>> this->m_enemyConfig.SMAX) {
+			std::getline(iss >> std::ws, data_in);
+		}
 	};
 
-	p_map["Bullet"] = [](std::istringstream& iss) {
+	p_map["Bullet"] = [&](std::istringstream& iss) {
+		std::string data_in;
 
+		if (iss >> this->m_bulletConfig.SR
+				>> this->m_bulletConfig.CR
+				>> this->m_bulletConfig.FR
+				>> this->m_bulletConfig.FG
+				>> this->m_bulletConfig.FB
+				>> this->m_bulletConfig.OR
+				>> this->m_bulletConfig.OG
+				>> this->m_bulletConfig.OB
+				>> this->m_bulletConfig.OT
+				>> this->m_bulletConfig.V
+				>> this->m_bulletConfig.L
+				>> this->m_bulletConfig.S) {
+			std::getline(iss >> std::ws, data_in);
+		}
 	};
 
 	std::string c_line;
@@ -95,8 +143,10 @@ void Game::spawnPlayer() {
 	float mx = m_window.getSize().x / 2.0f;
 	float my = m_window.getSize().y / 2.0f;
 
-	entity->cTransform = std::make_shared<CTransform>(Vc2(mx, my), Vc2(0.0f, 0.0f), 0.0f);
-	entity->cShape     = std::make_shared<CShape>(32.0f, 8, sf::Color(10,10,10), sf::Color(255,0,0), 4.0f);
+	auto& [p_SR, p_CR, p_FR, p_FG, p_FB, p_OR, p_OG, p_OB, p_OT, p_V, p_S] = m_playerConfig;
+
+	entity->cTransform = std::make_shared<CTransform>(Vc2(mx, my), Vc2(0.0f, 0.0f), p_S);
+	entity->cShape     = std::make_shared<CShape>(p_CR, p_V, sf::Color(p_FR,p_FG,p_FB), sf::Color(p_OR,p_OG,p_OB), p_OT);
 	entity->cInput     = std::make_shared<CInput>();
 
 	m_player = entity;

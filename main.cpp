@@ -5,6 +5,6 @@
 
 int main() {
     Game game("config.ini");
-    std::cout << game.m_windowConfig.H << std::endl;
+    std::cout << game.m_playerConfig.V << std::endl;
     game.run();
 }
