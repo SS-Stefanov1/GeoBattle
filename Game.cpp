@@ -111,8 +111,15 @@ void Game::loadFile(const std::string& path) {
 void Game::init(const std::string& path) {
 	loadFile(path);
 
-	m_window.create(sf::VideoMode(1280,720), "GeoBattle");
-	m_window.setFramerateLimit(60);
+	const bool window_mode = m_windowConfig.FS;
+
+	if (!window_mode) {
+		m_window.create(sf::VideoMode(m_windowConfig.W, m_windowConfig.H), "GeoBattle", sf::Style::Default);
+	} else {
+		m_window.create(sf::VideoMode::getDesktopMode(), "GeoBattle", sf::Style::Fullscreen);
+	}
+
+	m_window.setFramerateLimit(m_windowConfig.FR);
 
 	spawnPlayer();
 };
@@ -231,6 +238,8 @@ void Game::sUserInput() {
 
 	while (m_window.pollEvent(event)) {
 		if (event.type == sf::Event::Closed) { m_running = false; }
+
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) { m_window.close(); };
 
 		if (event.type == sf::Event::KeyPressed) {
 			switch(event.key.code) {
