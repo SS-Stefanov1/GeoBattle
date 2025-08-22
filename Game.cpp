@@ -185,15 +185,15 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
 
 void Game::sMovement() {
 	if (m_player->cInput->up) {
-		m_player->cTransform->velocity.x += m_playerConfig.S;
+		m_player->cTransform->velocity.y += m_playerConfig.S;
 	} else if (m_player->cInput->down) {
-		m_player->cTransform->velocity.x -= m_playerConfig.S;
+		m_player->cTransform->velocity.y -= m_playerConfig.S;
 	}
 
 	if (m_player->cInput->left) {
-		m_player->cTransform->velocity.y -= m_playerConfig.S;
+		m_player->cTransform->velocity.x -= m_playerConfig.S;
 	} else if (m_player->cInput->right) {
-		m_player->cTransform->velocity.y += m_playerConfig.S;
+		m_player->cTransform->velocity.x += m_playerConfig.S;
 	}
 	
 	if (m_player->cInput->shoot) {
@@ -244,8 +244,8 @@ void Game::sUserInput() {
 		if (event.type == sf::Event::KeyPressed) {
 			switch(event.key.code) {
 				case (sf::Keyboard::W): { m_player->cInput->up    = true; break; }
-				case (sf::Keyboard::A): { m_player->cInput->down  = true; break; }
-				case (sf::Keyboard::S): { m_player->cInput->left  = true; break; }
+				case (sf::Keyboard::S): { m_player->cInput->down  = true; break; }
+				case (sf::Keyboard::A): { m_player->cInput->left  = true; break; }
 				case (sf::Keyboard::D): { m_player->cInput->right = true; break; }
 
 				case (sf::Keyboard::P): { m_paused = !m_paused; }
@@ -257,8 +257,8 @@ void Game::sUserInput() {
 		if (event.type == sf::Event::KeyReleased) {
 			switch(event.key.code) {
 			case (sf::Keyboard::W): { m_player->cInput->up    = false; break; }
-			case (sf::Keyboard::A): { m_player->cInput->down  = false; break; }
-			case (sf::Keyboard::S): { m_player->cInput->left  = false; break; }
+			case (sf::Keyboard::S): { m_player->cInput->down  = false; break; }
+			case (sf::Keyboard::A): { m_player->cInput->left  = false; break; }
 			case (sf::Keyboard::D): { m_player->cInput->right = false; break; }
 
 			case (sf::Keyboard::P): { m_paused = !m_paused; }
