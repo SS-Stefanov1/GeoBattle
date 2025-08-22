@@ -165,15 +165,17 @@ void Game::spawnEnemy() {
 	auto ex = rand() % m_window.getSize().x;
 	auto ey = rand() % m_window.getSize().y;
 
-	float e_speed     = m_enemyConfig.SMIN + static_cast<float>(rand()) / ( static_cast<float> (RAND_MAX / (m_enemyConfig.SMAX - m_enemyConfig.SMIN)));
-	float e_dir       = static_cast<float>(rand() % 360) * (3.14159f / 180.0f);
-	int   e_sides     = m_enemyConfig.VMIN + (rand() / (RAND_MAX / (m_enemyConfig.VMAX - m_enemyConfig.VMIN)));
+	float e_speed = m_enemyConfig.SMIN + static_cast<float>(rand()) / ( static_cast<float> (RAND_MAX / (m_enemyConfig.SMAX - m_enemyConfig.SMIN)));
+	float e_dir   = static_cast<float>(rand() % 360) * (3.14159f / 180.0f);
+	float e_size  = 16 + (rand() % (m_enemyConfig.CR - 16 + 1));
+	int   e_sides = m_enemyConfig.VMIN + (rand() / (RAND_MAX / (m_enemyConfig.VMAX - m_enemyConfig.VMIN)));
 	sf::Color e_color(rand() % 256, rand() % 256, rand() % 256);
+	sf::Color e_bcolor(rand() % 256, rand() % 256, rand() % 256);
 
 	Vc2 e_velocity(std::cos(e_dir) * e_speed, std::sin(e_dir) * e_speed);
 
 	entity->cTransform = std::make_shared<CTransform>(Vc2(ex,ey), e_velocity, 0.0f);
-	entity->cShape     = std::make_shared<CShape>(16.0f, e_sides, e_color, sf::Color(255,255,255), 4.0f);
+	entity->cShape     = std::make_shared<CShape>(e_size, e_sides, e_color, e_bcolor, 4.0f);
 
 	entity->cShape->circle.setOrigin(16.0f, 16.0f);
 
@@ -218,8 +220,64 @@ void Game::sLifespan() {
 };
 
 void Game::sCollision() {
+	float window_h = static_cast<float>(m_window.getSize().y);
+	float window_w = static_cast<float>(m_window.getSize().x);
 
-};
+	auto& active_enemies = m_entities.getEntities("enemy");
+
+	for (auto& e : active_enemies) {
+		auto& t = e->cTransform;
+		float r = e->cShape->circle.getRadius();
+
+		if (t->position.x - r < 0) {
+			t->position.x = r;
+			t->velocity.x *= -1;
+		}
+		else if (t->position.x + r > window_w) {
+			t->position.x = window_w - r;
+			t->velocity.x *= -1;
+		}
+
+
+		if (t->position.y - r < 0) {
+			t->position.y = r;
+			t->velocity.y *= -1;
+		}
+		else if (t->position.y + r > window_h) {
+			t->position.y = window_h - r;
+			t->velocity.y *= -1;
+		}
+	}
+
+	for (std::size_t i = 0; i < active_enemies.size(); ++i) {
+		for (std::size_t j = i + 1; j < active_enemies.size(); ++j) {
+			auto& e_i = active_enemies[i]->cTransform;
+			auto& e_j = active_enemies[j]->cTransform;
+
+			Vc2 diff     = e_i->position - e_j->position;
+			float dist   = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+			float m_dist = active_enemies[i]->cShape->circle.getRadius() + active_enemies[j]->cShape->circle.getRadius();
+
+			if (dist < m_dist && dist > 0.0f) {
+				Vc2 r_vel   = e_i->velocity - e_j->velocity;
+				Vc2 norm    = diff / dist;
+				float n_vel = r_vel.x * norm.x + r_vel.y * norm.y;
+				
+				if (n_vel > 0) { continue; }
+
+				Vc2 force = norm * n_vel * 1.0f;
+
+				e_i->velocity -= force;
+				e_j->velocity += force;	
+
+			    float overlap = 0.5f * (m_dist - dist * 1.0f);
+
+				e_i->position += norm * overlap;	
+				e_j->position -= norm * overlap;
+			}
+		}
+	}
+};	
 
 void Game::sEnemySpawner() {
 	if (m_currentFrame - m_lastEnemySpawnTime >= m_enemyConfig.SI) { 
