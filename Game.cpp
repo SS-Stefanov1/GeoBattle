@@ -24,11 +24,11 @@ void Game::loadFile(const std::string& path) {
 	p_map["Font"]   = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_fontConfig.P
-				>> this->m_fontConfig.S
+		if (iss >> this->m_fontConfig.S
 				>> this->m_fontConfig.FR
 				>> this->m_fontConfig.FG
-				>> this->m_fontConfig.FB) {
+				>> this->m_fontConfig.FB
+				>> this->m_fontConfig.P) {
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -162,8 +162,8 @@ void Game::spawnPlayer() {
 void Game::spawnEnemy() {
 	auto entity = m_entities.addEntity("enemy");
 
-	float ex = rand() % m_window.getSize().x;
-	float ey = rand() % m_window.getSize().y;
+	auto ex = rand() % m_window.getSize().x;
+	auto ey = rand() % m_window.getSize().y;
 
 	entity->cTransform = std::make_shared<CTransform>(Vc2(ex,ey), Vc2(1.0f, 1.0f), 0.0f);
 	entity->cShape     = std::make_shared<CShape>(16.0f, 3, sf::Color(0,0,255), sf::Color(255,255,255), 4.0f);
@@ -184,17 +184,14 @@ void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
 };
 
 void Game::sMovement() {
-	if (m_player->cInput->up) {
-		m_player->cTransform->velocity.y += m_playerConfig.S;
-	} else if (m_player->cInput->down) {
-		m_player->cTransform->velocity.y -= m_playerConfig.S;
-	}
+	m_player->cTransform->velocity = { 0.0f, 0.0f };
 
-	if (m_player->cInput->left) {
-		m_player->cTransform->velocity.x -= m_playerConfig.S;
-	} else if (m_player->cInput->right) {
-		m_player->cTransform->velocity.x += m_playerConfig.S;
-	}
+	if (m_player->cInput->up)    { m_player->cTransform->velocity.y -= m_playerConfig.S; } 
+	if (m_player->cInput->down)  { m_player->cTransform->velocity.y += m_playerConfig.S; }
+	if (m_player->cInput->left)  { m_player->cTransform->velocity.x -= m_playerConfig.S; } 
+	if (m_player->cInput->right) { m_player->cTransform->velocity.x += m_playerConfig.S; }
+
+	m_player->cTransform->position += m_player->cTransform->velocity;
 	
 	if (m_player->cInput->shoot) {
 

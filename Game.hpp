@@ -12,7 +12,7 @@
 #include <memory>
 #include <functional>
 
-struct FontConfig   { int S, FR, FG, FB; std::string P; };
+struct FontConfig   { int FR, FG, FB, S; std::string P; };
 struct WindowConfig { int W, H, FR; bool FS; };
 struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
