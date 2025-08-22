@@ -165,8 +165,17 @@ void Game::spawnEnemy() {
 	auto ex = rand() % m_window.getSize().x;
 	auto ey = rand() % m_window.getSize().y;
 
-	entity->cTransform = std::make_shared<CTransform>(Vc2(ex,ey), Vc2(1.0f, 1.0f), 0.0f);
-	entity->cShape     = std::make_shared<CShape>(16.0f, 3, sf::Color(0,0,255), sf::Color(255,255,255), 4.0f);
+	float e_speed     = m_enemyConfig.SMIN + static_cast<float>(rand()) / ( static_cast<float> (RAND_MAX / (m_enemyConfig.SMAX - m_enemyConfig.SMIN)));
+	float e_dir       = static_cast<float>(rand() % 360) * (3.14159f / 180.0f);
+	int   e_sides     = m_enemyConfig.VMIN + (rand() / (RAND_MAX / (m_enemyConfig.VMAX - m_enemyConfig.VMIN)));
+	sf::Color e_color(rand() % 256, rand() % 256, rand() % 256);
+
+	Vc2 e_velocity(std::cos(e_dir) * e_speed, std::sin(e_dir) * e_speed);
+
+	entity->cTransform = std::make_shared<CTransform>(Vc2(ex,ey), e_velocity, 0.0f);
+	entity->cShape     = std::make_shared<CShape>(16.0f, e_sides, e_color, sf::Color(255,255,255), 4.0f);
+
+	entity->cShape->circle.setOrigin(16.0f, 16.0f);
 
 	m_lastEnemySpawnTime = m_currentFrame;
 };
@@ -193,6 +202,12 @@ void Game::sMovement() {
 
 	m_player->cTransform->position += m_player->cTransform->velocity;
 	
+	for (auto& e : m_entities.getEntities("enemy")) {
+		e->cTransform->position += e->cTransform->velocity;
+		e->cTransform->angle += 1.0f;
+		e->cShape->circle.setRotation(e->cTransform->angle);
+	}
+
 	if (m_player->cInput->shoot) {
 
 	}
@@ -207,7 +222,9 @@ void Game::sCollision() {
 };
 
 void Game::sEnemySpawner() {
-	spawnEnemy();
+	if (m_currentFrame - m_lastEnemySpawnTime >= m_enemyConfig.SI) { 
+		spawnEnemy();
+	}
 };
 
 void Game::sRender() {
