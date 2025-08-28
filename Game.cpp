@@ -13,10 +13,10 @@ void Game::loadFile(const std::string& path) {
 	p_map["Window"] = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_windowConfig.W 
-				>> this->m_windowConfig.H 
-				>> this->m_windowConfig.FR 
-				>> this->m_windowConfig.FS) {
+		if (iss >> this->m_windowConfig.W     // Width
+				>> this->m_windowConfig.H     // Height
+				>> this->m_windowConfig.FR    // Framerate 
+				>> this->m_windowConfig.FS) { // Fullscreen Toggle
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -36,17 +36,17 @@ void Game::loadFile(const std::string& path) {
 	p_map["Player"] = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_playerConfig.SR 
-				>> this->m_playerConfig.CR
-				>> this->m_playerConfig.FR
-				>> this->m_playerConfig.FG
-				>> this->m_playerConfig.FB
-				>> this->m_playerConfig.OR
-				>> this->m_playerConfig.OG
-				>> this->m_playerConfig.OB
-				>> this->m_playerConfig.OT
-				>> this->m_playerConfig.V
-				>> this->m_playerConfig.S) {
+		if (iss >> this->m_playerConfig.SR   // Player Radius
+				>> this->m_playerConfig.CR   // Collision Radius
+				>> this->m_playerConfig.FR   // R
+				>> this->m_playerConfig.FG   // G
+				>> this->m_playerConfig.FB   // B
+				>> this->m_playerConfig.OR   // Outline R
+				>> this->m_playerConfig.OG   // Outlibe G
+				>> this->m_playerConfig.OB   // Outlibe B
+				>> this->m_playerConfig.OT   // 
+				>> this->m_playerConfig.V    // Sides
+				>> this->m_playerConfig.S) { // Speed
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -54,18 +54,18 @@ void Game::loadFile(const std::string& path) {
 	p_map["Enemy"]  = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_enemyConfig.SR
-				>> this->m_enemyConfig.CR
-				>> this->m_enemyConfig.OR
-				>> this->m_enemyConfig.OG
-				>> this->m_enemyConfig.OB
-				>> this->m_enemyConfig.OT
-				>> this->m_enemyConfig.VMIN
-				>> this->m_enemyConfig.VMAX
-				>> this->m_enemyConfig.L
-				>> this->m_enemyConfig.SI
-				>> this->m_enemyConfig.SMIN
-				>> this->m_enemyConfig.SMAX) {
+		if (iss >> this->m_enemyConfig.SR      // Enemy Radius
+				>> this->m_enemyConfig.CR      // Collision Radius
+				>> this->m_enemyConfig.OR      // R
+				>> this->m_enemyConfig.OG      // G
+				>> this->m_enemyConfig.OB      // B
+				>> this->m_enemyConfig.OT      // 
+				>> this->m_enemyConfig.VMIN    // Sides Min
+				>> this->m_enemyConfig.VMAX    // Sides Max
+				>> this->m_enemyConfig.L       // 
+				>> this->m_enemyConfig.SI      // 
+				>> this->m_enemyConfig.SMIN    // Min Speed
+				>> this->m_enemyConfig.SMAX) { // Max Speed
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -73,18 +73,18 @@ void Game::loadFile(const std::string& path) {
 	p_map["Bullet"] = [&](std::istringstream& iss) {
 		std::string data_in;
 
-		if (iss >> this->m_bulletConfig.SR
-				>> this->m_bulletConfig.CR
-				>> this->m_bulletConfig.FR
-				>> this->m_bulletConfig.FG
-				>> this->m_bulletConfig.FB
-				>> this->m_bulletConfig.OR
-				>> this->m_bulletConfig.OG
-				>> this->m_bulletConfig.OB
-				>> this->m_bulletConfig.OT
-				>> this->m_bulletConfig.V
-				>> this->m_bulletConfig.L
-				>> this->m_bulletConfig.S) {
+		if (iss >> this->m_bulletConfig.SR   // Size
+				>> this->m_bulletConfig.CR   // Collision Radius
+				>> this->m_bulletConfig.FR   // R
+				>> this->m_bulletConfig.FG   // G
+				>> this->m_bulletConfig.FB   // B
+				>> this->m_bulletConfig.OR   // Outline R
+				>> this->m_bulletConfig.OG   // Outline G
+				>> this->m_bulletConfig.OB   // Outline B
+				>> this->m_bulletConfig.OT   // ??
+				>> this->m_bulletConfig.V    // Velocity?
+				>> this->m_bulletConfig.L    // Lifetime
+				>> this->m_bulletConfig.S) { // ??
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -187,7 +187,19 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e) {
 };
 
 void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vc2& target) {
+	//auto bullet = m_entities.addEntity("bullet");
 
+	//bullet->cTransform = std::make_shared<CTransform>();
+	//bullet->cTransform->position = entity->cTransform->position;
+
+	//Vc2 dir = target - entity->cTransform->position;
+	//float distance = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+
+	//if (distance > 0) { dir /= distance; }
+
+	//Vc2 velocity = dir * m_bulletConfig.S;
+
+	
 };
 
 void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
@@ -223,6 +235,7 @@ void Game::sCollision() {
 	float window_h = static_cast<float>(m_window.getSize().y);
 	float window_w = static_cast<float>(m_window.getSize().x);
 
+	auto& active_bullets = m_entities.getEntities("bullet");
 	auto& active_enemies = m_entities.getEntities("enemy");
 
 	for (auto& e : active_enemies) {

@@ -24,6 +24,15 @@ class CShape {
 		}
 };
 
+class CBullet {
+	public : 
+		sf::RectangleShape bullet;
+
+	/*CBullet() : {
+
+	}*/
+};
+
 class CCollision {
 	public : 
 		float radius = 0;
