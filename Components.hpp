@@ -28,9 +28,13 @@ class CBullet {
 	public : 
 		sf::RectangleShape bullet;
 
-	/*CBullet() : {
-
-	}*/
+	CBullet(float radius, float collision_area, const sf::Color& fill, const sf::Color& outline, int lifetime, float speed) {
+		bullet.setFillColor(fill);
+		bullet.setOutlineColor(outline);
+		bullet.setOutlineThickness(1);
+		bullet.setOrigin(radius,radius);
+		bullet.setSize({radius * 2.0f, radius * 2.0f});
+	}
 };
 
 class CCollision {

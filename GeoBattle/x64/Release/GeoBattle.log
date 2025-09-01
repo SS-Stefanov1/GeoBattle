@@ -1,20 +1,20 @@
 ﻿  Game.cpp
-C:\libraries\VSCPP\GeoBattle\Game.cpp(170,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,59): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,59): warning C4244:         with
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,59): warning C4244:         [
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,59): warning C4244:             T=unsigned int
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,59): warning C4244:         ]
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,56): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,56): warning C4244:         with
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,56): warning C4244:         [
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,56): warning C4244:             T=unsigned int
-C:\libraries\VSCPP\GeoBattle\Game.cpp(177,56): warning C4244:         ]
+C:\libraries\VSCPP\GeoBattle\Game.cpp(168,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,59): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,59): warning C4244:         with
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,59): warning C4244:         [
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,59): warning C4244:             T=unsigned int
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,59): warning C4244:         ]
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         with
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         [
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:             T=unsigned int
+C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         ]
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(462,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'Game.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(462,85):
       the template instantiation context (the oldest one first) is
-          C:\libraries\VSCPP\GeoBattle\Game.cpp(156,28):
+          C:\libraries\VSCPP\GeoBattle\Game.cpp(154,28):
           see reference to function template instantiation 'std::shared_ptr<CShape> std::make_shared<CShape,int&,int&,sf::Color,sf::Color,int&>(int &,int &,sf::Color &&,sf::Color &&,int &)' being compiled
           C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(2913,46):
           see reference to function template instantiation 'std::_Ref_count_obj2<CShape>::_Ref_count_obj2<int&,int&,_Ty,_Ty,int&>(int &,int &,_Ty &&,_Ty &&,int &)' being compiled
@@ -56,8 +56,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.3520
           ]
   
   Generating code
-  2 of 785 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  3 of 795 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    18 functions had inline decision re-evaluated but remain unchanged
+    25 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GeoBattle.vcxproj -> C:\libraries\VSCPP\GeoBattle\x64\Release\GeoBattle.exe

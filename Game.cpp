@@ -81,10 +81,8 @@ void Game::loadFile(const std::string& path) {
 				>> this->m_bulletConfig.OR   // Outline R
 				>> this->m_bulletConfig.OG   // Outline G
 				>> this->m_bulletConfig.OB   // Outline B
-				>> this->m_bulletConfig.OT   // ??
-				>> this->m_bulletConfig.V    // Velocity?
 				>> this->m_bulletConfig.L    // Lifetime
-				>> this->m_bulletConfig.S) { // ??
+				>> this->m_bulletConfig.S) { // Speed
 			std::getline(iss >> std::ws, data_in);
 		}
 	};
@@ -186,20 +184,10 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e) {
 
 };
 
-void Game::spawnBullet(std::shared_ptr<Entity> entity, const Vc2& target) {
-	//auto bullet = m_entities.addEntity("bullet");
+void Game::spawnBullet(const Vc2& origin, const Vc2& target) {
+	std::shared_ptr<Entity> bullet = m_entities.addEntity("bullet");
 
-	//bullet->cTransform = std::make_shared<CTransform>();
-	//bullet->cTransform->position = entity->cTransform->position;
-
-	//Vc2 dir = target - entity->cTransform->position;
-	//float distance = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-
-	//if (distance > 0) { dir /= distance; }
-
-	//Vc2 velocity = dir * m_bulletConfig.S;
-
-	
+	std::cout << target.x << " " << target.y << std::endl;
 };
 
 void Game::spawnSpecialWeapon(std::shared_ptr<Entity> entity) {
@@ -217,6 +205,7 @@ void Game::sMovement() {
 	m_player->cTransform->position += m_player->cTransform->velocity;
 	
 	for (auto& e : m_entities.getEntities("enemy")) {
+		if (!e || !e->cShape) { continue; }
 		e->cTransform->position += e->cTransform->velocity;
 		e->cTransform->angle += 1.0f;
 		e->cShape->circle.setRotation(e->cTransform->angle);
@@ -308,11 +297,16 @@ void Game::sRender() {
 	m_window.draw(m_player->cShape->circle);
 
 	for (auto e : m_entities.getEntities()) {
-		e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
-		e->cTransform->angle += 1.0f;
-		e->cShape->circle.setRotation(e->cTransform->angle);
+		if (e->cShape) {
+			e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
+			e->cTransform->angle += 1.0f;
+			e->cShape->circle.setRotation(e->cTransform->angle);
 
-		m_window.draw(e->cShape->circle);
+			m_window.draw(e->cShape->circle);
+		} else if (e->cBullet) {
+			e->cBullet->bullet.setPosition(e->cTransform->position.x, e->cTransform->position.y);
+			m_window.draw(e->cBullet->bullet);
+		}
 	}
 
 	m_window.display();
@@ -355,6 +349,10 @@ void Game::sUserInput() {
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				m_player->cInput->shoot = true;
+
+				//For Test
+				const Vc2 test = {0.0, 0.0};
+				spawnBullet(test, {1.0f * event.mouseButton.x, 1.0f * event.mouseButton.y});
 				// event.mouseButton.x / event.mouseButton.y
 			}
 

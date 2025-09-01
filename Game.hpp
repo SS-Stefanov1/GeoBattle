@@ -16,7 +16,7 @@ struct FontConfig   { int FR, FG, FB, S; std::string P; };
 struct WindowConfig { int W, H, FR; bool FS; };
 struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
-struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V, L; float S; };
+struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, L; float S; };
 
 class Game {
 	friend int main(); // FOR TESTING PURPOSES ONLY!
@@ -52,7 +52,7 @@ class Game {
 		void spawnPlayer();
 		void spawnEnemy();
 		void spawnSmallEnemies(std::shared_ptr<Entity> entity);
-		void spawnBullet(std::shared_ptr<Entity> entity, const Vc2& mousePos);
+		void spawnBullet(const Vc2& playerPos, const Vc2& mousePos);
 		void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
 
 	public :
