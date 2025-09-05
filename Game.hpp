@@ -52,7 +52,7 @@ class Game {
 		void spawnPlayer();
 		void spawnEnemy();
 		void spawnSmallEnemies(std::shared_ptr<Entity> entity);
-		void spawnBullet(const Vc2& playerPos, const Vc2& mousePos);
+		void spawnBullet(const Vc2& mousePos);
 		void spawnSpecialWeapon(std::shared_ptr<Entity> entity);
 
 	public :

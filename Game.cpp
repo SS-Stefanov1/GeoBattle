@@ -158,7 +158,7 @@ void Game::spawnPlayer() {
 };
 
 void Game::spawnEnemy() {
-	auto entity = m_entities.addEntity("enemy");
+	std::shared_ptr<Entity> entity = m_entities.addEntity("enemy");
 
 	auto ex = rand() % m_window.getSize().x;
 	auto ey = rand() % m_window.getSize().y;
@@ -184,8 +184,25 @@ void Game::spawnSmallEnemies(std::shared_ptr<Entity> e) {
 
 };
 
-void Game::spawnBullet(const Vc2& origin, const Vc2& target) {
-	std::shared_ptr<Entity> bullet = m_entities.addEntity("bullet");
+void Game::spawnBullet(const Vc2& target) {
+	std::shared_ptr<Entity> entity = m_entities.addEntity("bullet");
+
+	Vc2   origin  = m_player->cTransform->position;
+	Vc2   e_dir   = target * 1.0f - origin * 1.0f;
+	float e_speed = m_bulletConfig.S;
+	float e_size  = m_bulletConfig.CR;
+	int   e_sides = m_enemyConfig.VMIN + (rand() / (RAND_MAX / (m_enemyConfig.VMAX - m_enemyConfig.VMIN)));
+	sf::Color e_color(m_bulletConfig.FR, m_bulletConfig.FG, m_bulletConfig.FB);
+	sf::Color e_bcolor(m_bulletConfig.OR, m_bulletConfig.OG, m_bulletConfig.FB);
+
+	float e_dist = std::sqrt(e_dir.x * e_dir.x + e_dir.y * e_dir.y);
+	if (e_dist != 0.0f) { e_dir.x /= e_dist; e_dir.y /= e_dist; } 
+
+	//Vc2 e_velocity(std::cos(e_dir) * e_speed, std::sin(e_dir) * e_speed);
+
+	entity->cTransform = std::make_shared<CTransform>(origin, e_dir * e_speed, 0.0f);
+	entity->cShape = std::make_shared<CShape>(e_size, e_sides, e_color, e_bcolor, 4.0f);
+	entity->cShape->circle.setOrigin(16.0f, 16.0f);
 
 	std::cout << target.x << " " << target.y << std::endl;
 };
@@ -224,7 +241,7 @@ void Game::sCollision() {
 	float window_h = static_cast<float>(m_window.getSize().y);
 	float window_w = static_cast<float>(m_window.getSize().x);
 
-	auto& active_bullets = m_entities.getEntities("bullet");
+	//auto& active_bullets = m_entities.getEntities("bullet");
 	auto& active_enemies = m_entities.getEntities("enemy");
 
 	for (auto& e : active_enemies) {
@@ -283,7 +300,7 @@ void Game::sCollision() {
 
 void Game::sEnemySpawner() {
 	if (m_currentFrame - m_lastEnemySpawnTime >= m_enemyConfig.SI) { 
-		spawnEnemy();
+		//spawnEnemy();
 	}
 };
 
@@ -351,8 +368,8 @@ void Game::sUserInput() {
 				m_player->cInput->shoot = true;
 
 				//For Test
-				const Vc2 test = {0.0, 0.0};
-				spawnBullet(test, {1.0f * event.mouseButton.x, 1.0f * event.mouseButton.y});
+				Vc2 target = { 1.0f * event.mouseButton.x, 1.0f * event.mouseButton.y };
+				spawnBullet(target);
 				// event.mouseButton.x / event.mouseButton.y
 			}
 

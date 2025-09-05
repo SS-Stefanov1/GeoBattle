@@ -10,6 +10,7 @@ C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         with
 C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         [
 C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:             T=unsigned int
 C:\libraries\VSCPP\GeoBattle\Game.cpp(175,56): warning C4244:         ]
+C:\libraries\VSCPP\GeoBattle\Game.cpp(193,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(462,85): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   (compiling source file 'Game.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\xutility(462,85):
@@ -56,8 +57,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.3520
           ]
   
   Generating code
-  3 of 795 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    25 functions had inline decision re-evaluated but remain unchanged
+  21 of 792 functions ( 2.7%) were compiled, the rest were copied from previous compilation.
+    4 functions were new in current compilation
+    82 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   GeoBattle.vcxproj -> C:\libraries\VSCPP\GeoBattle\x64\Release\GeoBattle.exe
