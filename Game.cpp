@@ -190,7 +190,10 @@ void Game::spawnBullet(const Vc2& target) {
 	Vc2   origin  = m_player->cTransform->position;
 	Vc2   e_dir   = target * 1.0f - origin * 1.0f;
 	float e_speed = m_bulletConfig.S;
-	float e_size  = m_bulletConfig.CR;
+	float e_size  = m_bulletConfig.SR;
+	float e_csize = m_bulletConfig.CR;
+	float e_angle = std::atan2(e_dir.y, e_dir.x) * 180.0f / 3.14159f;
+	int   e_life  = m_bulletConfig.L;
 	int   e_sides = m_enemyConfig.VMIN + (rand() / (RAND_MAX / (m_enemyConfig.VMAX - m_enemyConfig.VMIN)));
 	sf::Color e_color(m_bulletConfig.FR, m_bulletConfig.FG, m_bulletConfig.FB);
 	sf::Color e_bcolor(m_bulletConfig.OR, m_bulletConfig.OG, m_bulletConfig.FB);
@@ -198,11 +201,11 @@ void Game::spawnBullet(const Vc2& target) {
 	float e_dist = std::sqrt(e_dir.x * e_dir.x + e_dir.y * e_dir.y);
 	if (e_dist != 0.0f) { e_dir.x /= e_dist; e_dir.y /= e_dist; } 
 
-	//Vc2 e_velocity(std::cos(e_dir) * e_speed, std::sin(e_dir) * e_speed);
+	//float p_radius = m_player->cShape->circle.getRadius();
+	//Vc2 offset = { origin.x + p_radius, origin.y + p_radius };
 
-	entity->cTransform = std::make_shared<CTransform>(origin, e_dir * e_speed, 0.0f);
-	entity->cShape = std::make_shared<CShape>(e_size, e_sides, e_color, e_bcolor, 4.0f);
-	entity->cShape->circle.setOrigin(16.0f, 16.0f);
+	entity->cTransform = std::make_shared<CTransform>(Vc2(origin.x, origin.y), e_dir * e_speed, e_angle);
+	entity->cBullet = std::make_shared<CBullet>(e_size, e_csize, e_color, e_bcolor, e_life, e_speed);
 
 	std::cout << target.x << " " << target.y << std::endl;
 };
@@ -242,7 +245,7 @@ void Game::sCollision() {
 	float window_w = static_cast<float>(m_window.getSize().x);
 
 	//auto& active_bullets = m_entities.getEntities("bullet");
-	auto& active_enemies = m_entities.getEntities("enemy");
+	/*auto& active_enemies = m_entities.getEntities("enemy");
 
 	for (auto& e : active_enemies) {
 		auto& t = e->cTransform;
@@ -295,7 +298,7 @@ void Game::sCollision() {
 				e_j->position -= norm * overlap;
 			}
 		}
-	}
+	}*/
 };	
 
 void Game::sEnemySpawner() {
@@ -314,14 +317,15 @@ void Game::sRender() {
 	m_window.draw(m_player->cShape->circle);
 
 	for (auto e : m_entities.getEntities()) {
-		if (e->cShape) {
+		if (e->cShape && e->cTransform) {
 			e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
 			e->cTransform->angle += 1.0f;
 			e->cShape->circle.setRotation(e->cTransform->angle);
 
 			m_window.draw(e->cShape->circle);
-		} else if (e->cBullet) {
+		} else if (e->cBullet && e->cTransform) {
 			e->cBullet->bullet.setPosition(e->cTransform->position.x, e->cTransform->position.y);
+			e->cBullet->bullet.setRotation(e->cTransform->angle);
 			m_window.draw(e->cBullet->bullet);
 		}
 	}

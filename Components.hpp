@@ -25,17 +25,20 @@ class CShape {
 };
 
 class CBullet {
-	public : 
+	public:
 		sf::RectangleShape bullet;
+		float speed;
+		int lifetime;
 
-	CBullet(float radius, float collision_area, const sf::Color& fill, const sf::Color& outline, int lifetime, float speed) {
-		bullet.setFillColor(fill);
-		bullet.setOutlineColor(outline);
-		bullet.setOutlineThickness(1);
-		bullet.setOrigin(radius,radius);
-		bullet.setSize({radius * 2.0f, radius * 2.0f});
-	}
+		CBullet(float size, float collision_area, const sf::Color& fill, const sf::Color& outline, int life, float spd) : lifetime(life), speed(spd) {
+			bullet.setFillColor(fill);
+			bullet.setOutlineColor(outline);
+			bullet.setOutlineThickness(1.0f);
+			bullet.setSize({ size * 2.0f, 2.0f });
+			bullet.setOrigin(size, size);
+		}
 };
+
 
 class CCollision {
 	public : 
