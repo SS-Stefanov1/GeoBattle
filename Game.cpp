@@ -201,8 +201,9 @@ void Game::spawnBullet(const Vc2& target) {
 	float e_dist = std::sqrt(e_dir.x * e_dir.x + e_dir.y * e_dir.y);
 	if (e_dist != 0.0f) { e_dir.x /= e_dist; e_dir.y /= e_dist; } 
 
-	//float p_radius = m_player->cShape->circle.getRadius();
-	//Vc2 offset = { origin.x + p_radius, origin.y + p_radius };
+	//! NOTE: Offset the bullet to the middle attempt 1
+	// float p_radius = m_player->cShape->circle.getRadius();
+	// Vc2 offset = { origin.x + p_radius, origin.y + p_radius };
 
 	entity->cTransform = std::make_shared<CTransform>(Vc2(origin.x, origin.y), e_dir * e_speed, e_angle);
 	entity->cBullet = std::make_shared<CBullet>(e_size, e_csize, e_color, e_bcolor, e_life, e_speed);
@@ -244,8 +245,8 @@ void Game::sCollision() {
 	float window_h = static_cast<float>(m_window.getSize().y);
 	float window_w = static_cast<float>(m_window.getSize().x);
 
-	//auto& active_bullets = m_entities.getEntities("bullet");
-	/*auto& active_enemies = m_entities.getEntities("enemy");
+	auto& active_bullets = m_entities.getEntities("bullet");
+	auto& active_enemies = m_entities.getEntities("enemy");
 
 	for (auto& e : active_enemies) {
 		auto& t = e->cTransform;
@@ -298,12 +299,12 @@ void Game::sCollision() {
 				e_j->position -= norm * overlap;
 			}
 		}
-	}*/
+	}
 };	
 
 void Game::sEnemySpawner() {
 	if (m_currentFrame - m_lastEnemySpawnTime >= m_enemyConfig.SI) { 
-		//spawnEnemy();
+		spawnEnemy();
 	}
 };
 
@@ -316,7 +317,7 @@ void Game::sRender() {
 
 	m_window.draw(m_player->cShape->circle);
 
-	for (auto e : m_entities.getEntities()) {
+	for (auto e : m_entities.getEntities("all")) {
 		if (e->cShape && e->cTransform) {
 			e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
 			e->cTransform->angle += 1.0f;
@@ -326,6 +327,7 @@ void Game::sRender() {
 		} else if (e->cBullet && e->cTransform) {
 			e->cBullet->bullet.setPosition(e->cTransform->position.x, e->cTransform->position.y);
 			e->cBullet->bullet.setRotation(e->cTransform->angle);
+			e->cTransform->position += e->cTransform->velocity;
 			m_window.draw(e->cBullet->bullet);
 		}
 	}

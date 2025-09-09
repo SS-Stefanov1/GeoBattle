@@ -25,7 +25,7 @@ class CShape {
 };
 
 class CBullet {
-	public:
+	public :
 		sf::RectangleShape bullet;
 		float speed;
 		int lifetime;
@@ -35,7 +35,7 @@ class CBullet {
 			bullet.setOutlineColor(outline);
 			bullet.setOutlineThickness(1.0f);
 			bullet.setSize({ size * 2.0f, 2.0f });
-			bullet.setOrigin(size, size);
+			bullet.setOrigin(size / 4.0f, size / 4.0f);
 		}
 };
 

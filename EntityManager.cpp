@@ -28,10 +28,15 @@ std::shared_ptr<Entity> EntityManager::addEntity(const std::string& tag) {
 	return entity;
 };
 
-const EntityVec& EntityManager::getEntities() {
-	return m_entities;
-};
-
 const EntityVec& EntityManager::getEntities(const std::string& tag) {
-	return m_entities;
+	if (tag == "all") { return m_entities; }
+
+	static EntityVec entities;
+	entities.clear();
+
+	for (auto& e : m_entities) {
+		if (e->tag() == tag) { entities.push_back(e); }
+	}
+
+	return entities;
 };
