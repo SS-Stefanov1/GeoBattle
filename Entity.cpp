@@ -2,7 +2,7 @@
 
 #include "Entity.hpp"
 
-Entity::Entity(const std::size_t i, const std::string& t) : m_id(i), m_tag(t) {};
+Entity::Entity(const std::size_t i, const std::string& t) : m_id(i), m_tag(t), m_active(true) {};
 
 bool Entity::isActive() const { return m_active; }
 

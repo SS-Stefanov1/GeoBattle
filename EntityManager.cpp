@@ -3,7 +3,7 @@
 EntityManager::EntityManager() {};
 
 void EntityManager::removeDeadEntities(EntityVec& v) {
-	
+	v.erase( std::remove_if(v.begin(), v.end(),[](const std::shared_ptr<Entity>& e) { return !e->isActive(); }), v.end() );
 };
 
 void EntityManager::update() {
@@ -28,7 +28,7 @@ std::shared_ptr<Entity> EntityManager::addEntity(const std::string& tag) {
 	return entity;
 };
 
-const EntityVec& EntityManager::getEntities(const std::string& tag) {
+EntityVec EntityManager::getEntities(const std::string& tag) {
 	if (tag == "all") { return m_entities; }
 
 	static EntityVec entities;

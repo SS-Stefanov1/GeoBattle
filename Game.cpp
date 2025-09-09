@@ -245,8 +245,8 @@ void Game::sCollision() {
 	float window_h = static_cast<float>(m_window.getSize().y);
 	float window_w = static_cast<float>(m_window.getSize().x);
 
-	auto& active_bullets = m_entities.getEntities("bullet");
-	auto& active_enemies = m_entities.getEntities("enemy");
+	auto active_bullets = m_entities.getEntities("bullet");
+	auto active_enemies = m_entities.getEntities("enemy");
 
 	for (auto& e : active_enemies) {
 		auto& t = e->cTransform;
@@ -269,6 +269,25 @@ void Game::sCollision() {
 		else if (t->position.y + r > window_h) {
 			t->position.y = window_h - r;
 			t->velocity.y *= -1;
+		}
+
+	}
+
+	for (auto& e : active_enemies) {
+		auto& t = e->cTransform;
+		float r = e->cShape->circle.getRadius();
+
+		for (auto& b : active_bullets) {
+			auto& bt = b->cTransform;
+			Vc2 diff = bt->position - t->position;
+			float dist = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+			float bulletRadius = b->cBullet->bullet.getSize().x * 0.5f;
+
+			if (dist < r + bulletRadius) {
+				b->destroy();
+				e->destroy();
+				break;
+			}
 		}
 	}
 
@@ -299,6 +318,7 @@ void Game::sCollision() {
 				e_j->position -= norm * overlap;
 			}
 		}
+
 	}
 };	
 
@@ -317,7 +337,7 @@ void Game::sRender() {
 
 	m_window.draw(m_player->cShape->circle);
 
-	for (auto e : m_entities.getEntities("all")) {
+	for (auto& e : m_entities.getEntities("all")) {
 		if (e->cShape && e->cTransform) {
 			e->cShape->circle.setPosition(e->cTransform->position.x, e->cTransform->position.y);
 			e->cTransform->angle += 1.0f;
