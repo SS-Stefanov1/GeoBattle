@@ -1,7 +1,9 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "EntityManager.hpp"
+#include "SceneManager.hpp"
 #include "Entity.hpp"
+#include "Scene.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -18,7 +20,7 @@ struct PlayerConfig { int SR, CR, FR, FG, FB, OR, OG, OB, OT, V; float S; };
 struct EnemyConfig  { int SR, CR, OR, OG, OB, OT, VMIN, VMAX, L, SI; float SMIN, SMAX; };
 struct BulletConfig { int SR, CR, FR, FG, FB, OR, OG, OB, L; float S; };
 
-class Game {
+class Game : public Scene {
 	friend int main(); // FOR TESTING PURPOSES ONLY!
 
 	private : 

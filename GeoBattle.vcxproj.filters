@@ -6,6 +6,9 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Vc2.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="scenes\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.hpp" />
@@ -14,5 +17,11 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="Vc2.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="SceneManager.hpp" />
+    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="scenes\MainMenu.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\arial.ttf" />
   </ItemGroup>
 </Project>

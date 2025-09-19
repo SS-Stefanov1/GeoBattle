@@ -201,10 +201,6 @@ void Game::spawnBullet(const Vc2& target) {
 	float e_dist = std::sqrt(e_dir.x * e_dir.x + e_dir.y * e_dir.y);
 	if (e_dist != 0.0f) { e_dir.x /= e_dist; e_dir.y /= e_dist; } 
 
-	//! NOTE: Offset the bullet to the middle attempt 1
-	// float p_radius = m_player->cShape->circle.getRadius();
-	// Vc2 offset = { origin.x + p_radius, origin.y + p_radius };
-
 	entity->cTransform = std::make_shared<CTransform>(Vc2(origin.x, origin.y), e_dir * e_speed, e_angle);
 	entity->cBullet = std::make_shared<CBullet>(e_size, e_csize, e_color, e_bcolor, e_life, e_speed);
 

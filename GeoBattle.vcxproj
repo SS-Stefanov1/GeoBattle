@@ -24,6 +24,9 @@
     <ClInclude Include="EntityManager.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="SceneManager.hpp" />
+    <ClInclude Include="scenes\MainMenu.hpp" />
     <ClInclude Include="Vc2.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +34,13 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="scenes\MainMenu.cpp" />
     <ClCompile Include="Vc2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\arial.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

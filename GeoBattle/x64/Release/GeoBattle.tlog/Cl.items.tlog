@@ -2,4 +2,7 @@ C:\libraries\VSCPP\GeoBattle\Entity.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x
 C:\libraries\VSCPP\GeoBattle\EntityManager.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\EntityManager.obj
 C:\libraries\VSCPP\GeoBattle\Game.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\Game.obj
 C:\libraries\VSCPP\GeoBattle\main.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\main.obj
+C:\libraries\VSCPP\GeoBattle\Scene.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\Scene.obj
+C:\libraries\VSCPP\GeoBattle\SceneManager.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\SceneManager.obj
+C:\libraries\VSCPP\GeoBattle\scenes\MainMenu.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\MainMenu.obj
 C:\libraries\VSCPP\GeoBattle\Vc2.cpp;C:\libraries\VSCPP\GeoBattle\GeoBattle\x64\Release\Vc2.obj
